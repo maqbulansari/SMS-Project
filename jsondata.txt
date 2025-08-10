@@ -1,0 +1,22 @@
+{
+"first_name":"Super user",
+"last_name":"Admin",
+"psw":"imDirector",
+"email":"MrDirector@gmail.com",
+"ph_no":8888888888,
+"gender":"male",
+"role":"Director"
+}
+
+
+//admission Form
+
+{
+  "first_name":"",
+"last_name":"",
+"psw":"",
+"email":"",
+"ph_no":,
+"gender":"",
+"role":"",
+}
