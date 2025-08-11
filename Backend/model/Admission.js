@@ -25,7 +25,7 @@ const AdmissionSchema = new mongoose.Schema({
     required:true
     },
     address:{
-        type:true,
+        type:String,
         required:true
     }
 }) 

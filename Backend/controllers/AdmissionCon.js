@@ -12,6 +12,7 @@ const RoleData = require("../model/Role.js");
 const SubjectData = require("../model/Subject.js");
 const ClassPeriodData = require("../model/class_period.js");
 const StudentAttendanceData = require("../model/stuAttendance.js");
+const addmissionData = require("../model/Admission.js")
 
 
 exports.StudentAdmission = async (req, res) => {
@@ -43,6 +44,7 @@ exports.StudentAdmission = async (req, res) => {
         const createyearlvl = await Yearlvl.create({...req.body})
         const createstuyearlvl = await StuYear_lvl_Data.create({...req.body,stu_id:createStudent._id,year_lvl_id:createyearlvl._id,sch_year_id:createschyear._id})
         const createfeercyearlvlfee = await fee_rec_yr_lvl_Data.create({...req.body,fee_rec_id:createFee._id,yearlvlfee_id:createyearlvlfee._id})
+        const createaddmission = await addmissionData.create({...req.body,student_id:createStudent._id,guardian_id:createGuardian._id,year_lvl_id:createyearlvl._id,sch_lvl_id:createschyear._id})
         const createsubId = await SubjectData.findOne({ subject_name: { $in: subject } });
 
         res.status(201).json({msg:"admission success"})
