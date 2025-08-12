@@ -24,10 +24,10 @@ exports.Register = async(req,res)=>{
                     }
                 });
                 if(role === "Teacher"){
-                    const createteacher = await teacherData.create({...req.body,user_id:createUser,_id})
+                    const createteacher = await teacherData.create({...req.body,user_id:createUser._id})
                 }
                 else {
-                    const createofficestaff = await OfficeStaffData.create({...req.body,user_id:createUser,_id})
+                    const createofficestaff = await OfficeStaffData.create({...req.body,user_id:createUser._id})
                 }
                 res.status(201).json({msg:"register success"})
     } catch (error) {
