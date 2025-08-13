@@ -6,6 +6,6 @@ const upload = multer({storage});
 const RegisterController = require("../controllers/RegisterCon.js");
 const Protect = require("../middleware/JWTveryfication.js");
 
-route.post("/register",Protect,upload.single("file"),RegisterController.Register);
+route.post("/register",upload.single("file"),RegisterController.Register);
 
 module.exports = route

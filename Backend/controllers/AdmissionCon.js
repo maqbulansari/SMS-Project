@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const UserData = require("../model/User.js");
 const StudentData = require("../model/Student.js");
 const StudentGuardianData = require("../model/StudentGuardian.js");
@@ -18,12 +19,13 @@ const addmissionData = require("../model/Admission.js")
 exports.StudentAdmission = async (req, res) => {
     try {
         const { role, email, psw ,subject} = req.body;
-        const CheckingUser = UserData.findOne({ email });
-        if (CheckingUser) res.status(409).json({ msg: "user Already exist please try login" })
+        const file = req.file;
+        const CheckingUser = await UserData.findOne({ email });
+        if (CheckingUser) return res.status(409).json({ msg: "user Already exist please try login" })
         if (!file) {
             return res.status(400).json({ error: 'plese upload a file' });
         }
-        const RoleId = await RoleData.findOne({ name: { $in: role } });
+        const RoleId = await RoleData.findOne({ name: role });
         const salt = await bcrypt.genSaltSync(10);
         const hashpsw = await bcrypt.hash(psw, salt);
         const createUser = await UserData.create({
@@ -45,11 +47,11 @@ exports.StudentAdmission = async (req, res) => {
         const createstuyearlvl = await StuYear_lvl_Data.create({...req.body,stu_id:createStudent._id,year_lvl_id:createyearlvl._id,sch_year_id:createschyear._id})
         const createfeercyearlvlfee = await fee_rec_yr_lvl_Data.create({...req.body,fee_rec_id:createFee._id,yearlvlfee_id:createyearlvlfee._id})
         const createaddmission = await addmissionData.create({...req.body,student_id:createStudent._id,guardian_id:createGuardian._id,year_lvl_id:createyearlvl._id,sch_lvl_id:createschyear._id})
-        const createsubId = await SubjectData.findOne({ subject_name: { $in: subject } });
+        // const createsubId = await SubjectData.findOne({ subject_name: { $in: subject } });
 
         res.status(201).json({msg:"admission success"})
 
     } catch (error) {
-        res.status(500).json({ msg: "admission unsuccess", err: error.message })
+        res.status(500).json({ msg: "admission unsuccess", err: error })
     }
 }

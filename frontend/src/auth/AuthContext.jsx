@@ -1,6 +1,6 @@
 import { Toaster } from '@/components/ui/sonner';
 import axios from 'axios';
-import React, { createContext, useContext, useEffect } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner';
 
 const createAuth = createContext();
@@ -9,6 +9,7 @@ export const useAuth = ()=>{
 }
 
 const AuthContext = ( {children}) => {
+    const [userData,setuser] = useState()
      
     const handleLogin = async(formdata,navigate)=>{
 
@@ -17,6 +18,7 @@ const AuthContext = ( {children}) => {
             window.localStorage.setItem("Token",responce.data.jwt);
             toast("Event has been created.")
             console.log(responce.data);
+            setuser(responce.data)
             navigate("/admin")
            
              
@@ -28,7 +30,8 @@ const AuthContext = ( {children}) => {
 
     
     const value = {
-        handleLogin
+        handleLogin,
+        userData
     }
   return (
    

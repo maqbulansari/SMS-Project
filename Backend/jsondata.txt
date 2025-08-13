@@ -12,11 +12,48 @@
 //admission Form
 
 {
-  "first_name":"",
-"last_name":"",
-"psw":"",
-"email":"",
-"ph_no":,
-"gender":"",
-"role":"",
+  "first_name": "John",
+  "middle_name": "A.",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "psw": "securePassword123",
+  "ph_no": "1234567890",
+  "gender": "Male",
+  "role": "Student",
+
+  "father_name": "Michael Doe",
+  "mother_name": "Sarah Doe",
+  "date_of_birth": "2010-05-20",
+
+  "anu_income": 50000,
+  "qualification": "Graduate",
+  "occupation": "Engineer",
+
+  "fee_type": "Tuition",
+  "month": "2025-08-01",
+  "total_amount": 2000,
+  "paid_amount": 1500,
+  "due_amount": 500,
+  "receipt_number": 123456,
+  "late_fee": 0,
+  "payment_status": true,
+  "remarks": "First installment",
+  "signature": "John's Signature",
+
+  "name": "2025-2026",
+  "st_date": "2025-06-01",
+  "end_date": "2026-03-31",
+
+  "lvl_name": "Grade 8",
+  "amount": "2000",
+
+  "admission_date": "2025-08-10",
+  "Pre_Sch_name": "Spring Valley Elementary",
+  "Pre_Std_name": "Grade 7",
+  "tc_latter": true,
+  "emr_c_number": 9998887776,
+  "address": "123 Main Street, Cityville",
+
+  "subject": "Mathematics"
 }
+

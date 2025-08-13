@@ -1,4 +1,4 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSubButton, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
@@ -9,6 +9,18 @@ const SideBar = () => {
     title: "Home",
     // url: "#",
     // icon: Home,
+  },
+  {
+    title: "Ragister",
+    to:"/ragistration"
+    // url: "#",
+    // icon: Inbox,
+  },
+  {
+    title: "Addmision",
+    to:"/addmission"
+    // url: "#",
+    // icon: Inbox,
   },
   {
     title: "Inbox",
@@ -32,18 +44,25 @@ const SideBar = () => {
   },
 ]
   return (
-    <SidebarProvider>
-    <Sidebar>
+  
+    <SidebarProvider style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        }
+      }  >
+    <Sidebar >  
        <SidebarHeader />
-       <SidebarContent>
+        <span className="text-base pl-2 font-semibold">Your School</span>
+       <SidebarContent >
         <SidebarGroup />
-         <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+         <SidebarGroupLabel>Actions</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
+                    <Link to={item.to}>
                       {/* <item.icon /> */}
                       <span>{item.title}</span>
                     </Link>
@@ -56,8 +75,7 @@ const SideBar = () => {
        </SidebarContent>
       <SidebarFooter />
     </Sidebar>
-    <SidebarTrigger />
-     <Outlet/>
+      <Outlet />
     </SidebarProvider>
   
   )
