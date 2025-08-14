@@ -1,12 +1,18 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSubButton, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
+import { Button } from './ui/button'
 
 const SideBar = () => {
+
+  const handleLogOut = ()=>{
+    window.localStorage.removeItem("Token")
+  }
 
   const items = [
   {
     title: "Home",
+    to:"/admin"
     // url: "#",
     // icon: Home,
   },
@@ -73,6 +79,13 @@ const SideBar = () => {
           </SidebarGroupContent>
         <SidebarGroup />
        </SidebarContent>
+       <SidebarMenu>
+        <SidebarMenuButton>
+          <SidebarMenuItem>
+           <Link onClick={()=>handleLogOut} to="/login">Log Out</Link>
+          </SidebarMenuItem>
+        </SidebarMenuButton>
+       </SidebarMenu>
       <SidebarFooter />
     </Sidebar>
       <Outlet />

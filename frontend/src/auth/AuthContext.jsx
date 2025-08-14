@@ -9,7 +9,7 @@ export const useAuth = ()=>{
 }
 
 const AuthContext = ( {children}) => {
-    const [userData,setuser] = useState()
+    const [userData,setuser] = useState({})
      
     const handleLogin = async(formdata,navigate)=>{
 
@@ -19,7 +19,10 @@ const AuthContext = ( {children}) => {
             toast("Event has been created.")
             console.log(responce.data);
             setuser(responce.data)
-            navigate("/admin")
+          if(userData.role == "Director") { return navigate("/admin")}
+          else{
+            return navigate("/user")
+          }
            
              
         }  catch (error) {

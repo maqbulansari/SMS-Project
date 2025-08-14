@@ -26,7 +26,7 @@ try {
     const guardians = await GuardianData.countDocuments();
     const officeStaff = await OfficeStaffData.countDocuments();
     
-    return res.status(201).json({msg:"success",jwt,user:gettingUser,role:role.name,totalcount:{students,teachers,guardians,officeStaff}})};
+   return res.status(201).json({msg:"success",jwt,user:gettingUser,role:role.name,totalcount:{students,teachers,guardians,officeStaff}})};
 
   res.status(201).json({msg:"success",jwt,user:gettingUser,role:role.name});
   
