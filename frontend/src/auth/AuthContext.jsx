@@ -16,7 +16,7 @@ const AuthContext = ( {children}) => {
         try {
             const responce = await axios.post("http://localhost:3000/user/login",formdata)
             window.localStorage.setItem("Token",responce.data.jwt);
-            toast("Event has been created.")
+            toast("Login Successfully")
             console.log(responce.data);
             setuser(responce.data)
           if(userData.role == "Director") { return navigate("/admin")}
@@ -40,7 +40,7 @@ const AuthContext = ( {children}) => {
    
    <createAuth.Provider value={value}>
     {children}
-     <Toaster />
+     <Toaster position="top-center" />
    </createAuth.Provider>
   )
 }
