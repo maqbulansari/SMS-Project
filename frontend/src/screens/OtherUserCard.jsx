@@ -1,17 +1,20 @@
+import { useAuth } from '@/auth/AuthContext'
+import { FeeSubmitForStudent } from '@/components/FeeSubmitForStudent'
 import MainCard from '@/components/MainCard'
-import { Button } from '@/components/ui/button'
+import { TableAttendance } from '@/components/TableAttendance'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+
 
 export const OtherUserCard = () => {
-  const navigation = useNavigate("")
- 
-  
-
+const {userData} = useAuth()
+const role = userData.role;
   return (
-   
-  <div className="mt-20 px-4 lg:px-6">
-    <div></div>
-  <MainCard/></div> 
+
+    <div className="mt-20 px-4 lg:px-6">
+      <MainCard />
+      {role === "Teacher" ? <TableAttendance/>:
+      <FeeSubmitForStudent/>
+      }
+    </div>
   )
-}
+} 

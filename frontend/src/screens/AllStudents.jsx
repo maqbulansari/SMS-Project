@@ -6,7 +6,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/comp
 const AllStudents = () => {
   const [data, setdata] = useState([]);
 
-  const gettingofficestaff = async () => {
+  const gettingAllstudents = async () => {
     try {
       const response = await axios.get("http://localhost:3000/admin/getstudent")
       console.log(response.data.students);
@@ -17,7 +17,7 @@ const AllStudents = () => {
     }
   }
   useEffect(() => {
-    gettingofficestaff()
+    gettingAllstudents()
   }, [])
   return (
      <div className="@container/main flex flex-1 flex-col gap-2"> 

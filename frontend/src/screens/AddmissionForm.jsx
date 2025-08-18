@@ -67,7 +67,7 @@ const AddmissionForm = () => {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0]
     if (file) {
-      form.setValue("file", file)
+      form.setValue("user_pro", file)
       const reader = new FileReader()
       reader.onloadend = () => setFilePreview(reader.result)
       reader.readAsDataURL(file)
@@ -77,7 +77,7 @@ const AddmissionForm = () => {
   const onSubmit = async(data) => {
     console.log("Form Submitted:", data)
     try {
-      await axios.post("/",data)
+      await axios.post("http://localhost:3000/user/addmission",data)
     } catch (error) {
       console.log(error);
       
@@ -216,8 +216,6 @@ const AddmissionForm = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Student">Student</SelectItem>
-                          <SelectItem value="Teacher">Teacher</SelectItem>
-                          <SelectItem value="Office Staff">Office Staff</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -288,7 +286,7 @@ const AddmissionForm = () => {
             </div>
           </section>
 
-          {/* Financial & Academic Info */}
+
           <section className="space-y-4">
             <h3 className="text-xl font-semibold border-b pb-2">Financial & Academic Info</h3>
 

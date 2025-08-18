@@ -1,11 +1,13 @@
 import { useAuth } from '@/auth/AuthContext'
 import SingIn from '@/auth/component/SingIn'
+import { FeeSubmitForStudent } from '@/components/FeeSubmitForStudent'
 import SideBar from '@/components/SideBar'
 import AddmissionForm from '@/screens/AddmissionForm'
 import AdminDashboard from '@/screens/AdminDashboard'
 import AllofficeStaff from '@/screens/AllofficeStaff'
 import AllStudents from '@/screens/AllStudents'
 import Allteachers from '@/screens/Allteachers'
+import { FeeDeposite } from '@/screens/FeeDeposite'
 import { OtherUserCard } from '@/screens/OtherUserCard'
 import RagistrationForm from '@/screens/RagistrationForm'
 import React from 'react'
@@ -19,14 +21,15 @@ const ProtectedRoute = ({ children }) => {
 }
 const AppRoute = () => {
     const {userData} =useAuth();
-    const user = "Director" || userData.role
+console.log(userData.role);
+
     
     return (
         <>
             <BrowserRouter>
                 <Routes>
                          <Route path='/login' index element={ <SingIn />} />
-                       { user === "Director"  ? <Route path='/' element={<ProtectedRoute> <SideBar /> </ProtectedRoute> }  >
+                          { userData.role === "Director"  ? <Route path='/' element={<ProtectedRoute> <SideBar /> </ProtectedRoute> }  >
                            <Route path='/admin' element={<AdminDashboard />} />
                            <Route path='/allteachers' element={<Allteachers/>} />
                            <Route path='/allstudents' element={<AllStudents/>} />
@@ -35,6 +38,7 @@ const AppRoute = () => {
                            <Route path='/ragistration' element={<RagistrationForm />} />
                     </Route> :
                     <Route path='/user' element={<OtherUserCard/>}/> }
+                     <Route path='/user/fee/deposite/:id' element={<FeeDeposite/>}/>
                 </Routes>
             </BrowserRouter>
         </>
