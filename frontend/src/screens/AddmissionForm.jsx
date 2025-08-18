@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import {
@@ -20,33 +18,81 @@ import {
   SelectItem,
 } from "@/components/ui/select"
 import { SideHeader } from "@/components/SideHeader"
+import axios from "axios"
 
 const AddmissionForm = () => {
   const form = useForm({
-    defaultValues: {
-      gender: "",
-      role: "Student",
-      payment_status: false,
-      tc_latter: false,
-      // you can add more default values here if needed
-    },
+      defaultValues: {
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    email: "",
+    psw: "",
+    ph_no: "",
+    gender: "",
+    role: "Student",
+    date_of_birth: "",
+    father_name: "",
+    mother_name: "",
+    anu_income: "",
+    qualification: "",
+    occupation: "",
+    fee_type: "",
+    month: "",
+    total_amount: "",
+    paid_amount: "",
+    due_amount: "",
+    receipt_number: "",
+    late_fee: "",
+    payment_status: false,
+    remarks: "",
+    signature: "",
+    name: "",
+    st_date: "",
+    end_date: "",
+    lvl_name: "",
+    amount: "",
+    admission_date: "",
+    Pre_Sch_name: "",
+    Pre_Std_name: "",
+    tc_latter: false,
+    emr_c_number: "",
+    address: "",
+    file: null,
+  },
   })
 
   const [filePreview, setFilePreview] = useState(null)
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data)
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      form.setValue("file", file)
+      const reader = new FileReader()
+      reader.onloadend = () => setFilePreview(reader.result)
+      reader.readAsDataURL(file)
+    }
   }
 
-  return ( <div className="@container/main flex flex-1 flex-col gap-2">  
-  <SideHeader/>
+  const onSubmit = async(data) => {
+    console.log("Form Submitted:", data)
+    try {
+      await axios.post("/",data)
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  return (<div className="@container/main flex flex-1 flex-col gap-2">
+    <SideHeader />
     <div className="max-w-3xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-md border border-gray-200">
       <h2 className="text-2xl font-semibold mb-6 text-center">Student Registration Form</h2>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-          {/* Personal Info */}
+   
           <section className="space-y-4">
             <h3 className="text-xl font-semibold border-b pb-2">Personal Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -156,6 +202,7 @@ const AddmissionForm = () => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="role"
@@ -178,6 +225,7 @@ const AddmissionForm = () => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="date_of_birth"
@@ -191,10 +239,23 @@ const AddmissionForm = () => {
                   </FormItem>
                 )}
               />
+              <FormItem>
+                <FormLabel>Profile Picture</FormLabel>
+                <FormControl>
+                  <Input type="file" onChange={handleFileChange} />
+                </FormControl>
+                {filePreview && (
+                  <img
+                    src={filePreview}
+                    alt="Preview"
+                    className="w-24 h-24 rounded-md mt-2 object-cover border"
+                  />
+                )}
+              </FormItem>
             </div>
           </section>
 
-          {/* Parent Info */}
+       
           <section className="space-y-4">
             <h3 className="text-xl font-semibold border-b pb-2">Parent Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -276,7 +337,7 @@ const AddmissionForm = () => {
             </div>
           </section>
 
-          {/* Fee & Payment Info */}
+  
           <section className="space-y-4">
             <h3 className="text-xl font-semibold border-b pb-2">Fee & Payment Details</h3>
 
@@ -422,7 +483,7 @@ const AddmissionForm = () => {
             />
           </section>
 
-          {/* Academic Year Info */}
+    
           <section className="space-y-4">
             <h3 className="text-xl font-semibold border-b pb-2">Academic Year</h3>
 
@@ -431,14 +492,25 @@ const AddmissionForm = () => {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Academic Year Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="2025-2026" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                              <FormItem>
+                                <FormLabel>Academic Year Name</FormLabel>
+                                <FormControl>
+                                  <Select onValueChange={field.onChange} value={field.value || ""}>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select Year" />
+                                    </SelectTrigger>
+                                     <SelectContent>
+                                      <SelectItem value="2021-2022">2021-2022</SelectItem>
+                                      <SelectItem value="2022-2023">2022-2023</SelectItem>
+                                      <SelectItem value="2023-2024">2023-2024</SelectItem>
+                                      <SelectItem value="2024-2025">2024-2025</SelectItem>
+                                      <SelectItem value="2025-2026">2025-2026</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
               />
               <FormField
                 control={form.control}
@@ -469,7 +541,7 @@ const AddmissionForm = () => {
             </div>
           </section>
 
-          {/* Level Info */}
+       
           <section className="space-y-4">
             <h3 className="text-xl font-semibold border-b pb-2">Level Information</h3>
 
@@ -478,14 +550,26 @@ const AddmissionForm = () => {
                 control={form.control}
                 name="lvl_name"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Level Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Grade 8" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                              <FormItem>
+                                <FormLabel>Grade</FormLabel>
+                                <FormControl>
+                                  <Select onValueChange={field.onChange} value={field.value || ""}>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select Grade" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="Grade 7">Grade 7</SelectItem>
+                                      <SelectItem value="Grade 8">Grade 8</SelectItem>
+                                      <SelectItem value="Grade 9">Grade 9</SelectItem>
+                                      <SelectItem value="Grade 10">Grade 10</SelectItem>
+                                      <SelectItem value="Grade 11">Grade 11</SelectItem>
+                                      <SelectItem value="Grade 12">Grade 12</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
               />
               <FormField
                 control={form.control}
@@ -503,7 +587,7 @@ const AddmissionForm = () => {
             </div>
           </section>
 
-          {/* Admission Info */}
+  
           <section className="space-y-4">
             <h3 className="text-xl font-semibold border-b pb-2">Admission Details</h3>
 
@@ -596,7 +680,7 @@ const AddmissionForm = () => {
             />
           </section>
 
-          {/* Submit */}
+  
           <div className="pt-6 text-center">
             <Button type="submit" className="w-full md:w-auto">
               Submit

@@ -19,13 +19,14 @@ const ProtectedRoute = ({ children }) => {
 }
 const AppRoute = () => {
     const {userData} =useAuth();
+    const user = "Director" || userData.role
     
     return (
         <>
             <BrowserRouter>
                 <Routes>
                          <Route path='/login' index element={ <SingIn />} />
-                       { userData.role === "Director"  ? <Route path='/' element={<ProtectedRoute> <SideBar /> </ProtectedRoute> }  >
+                       { user === "Director"  ? <Route path='/' element={<ProtectedRoute> <SideBar /> </ProtectedRoute> }  >
                            <Route path='/admin' element={<AdminDashboard />} />
                            <Route path='/allteachers' element={<Allteachers/>} />
                            <Route path='/allstudents' element={<AllStudents/>} />

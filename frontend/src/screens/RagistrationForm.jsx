@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import {
@@ -20,20 +18,29 @@ import {
   SelectItem,
 } from "@/components/ui/select"
 import { SideHeader } from "@/components/SideHeader"
+import axios from "axios"
 
 const RegistrationForm = () => {
   const form = useForm()
   const role = form.watch("role")
   const [filePreview, setFilePreview] = useState(null)
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data)
+  const onSubmit = async(data) => {
+    console.log("Form Submitted:", data);
+      try {
+      await axios.post("/",data)
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0]
+    console.log(file);
+    
     if (file) {
-      form.setValue("user_pro", file)
+      form.setValue("file", file)
       const reader = new FileReader()
       reader.onloadend = () => setFilePreview(reader.result)
       reader.readAsDataURL(file)
@@ -47,7 +54,6 @@ const RegistrationForm = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* USER FIELDS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -113,8 +119,6 @@ const RegistrationForm = () => {
                 </FormItem>
               )}
             />
-
-            {/* Gender Dropdown */}
             <FormField
               control={form.control}
               name="gender"
@@ -139,8 +143,6 @@ const RegistrationForm = () => {
               )}
             />
           </div>
-
-          {/* PASSWORD */}
           <FormField
             control={form.control}
             name="psw"
@@ -154,8 +156,6 @@ const RegistrationForm = () => {
               </FormItem>
             )}
           />
-
-          {/* PROFILE PICTURE UPLOAD */}
           <FormItem>
             <FormLabel>Profile Picture</FormLabel>
             <FormControl>
@@ -169,8 +169,6 @@ const RegistrationForm = () => {
               />
             )}
           </FormItem>
-
-          {/* ROLE DROPDOWN */}
           <FormField
             control={form.control}
             name="role"
@@ -192,8 +190,6 @@ const RegistrationForm = () => {
               </FormItem>
             )}
           />
-
-          {/* CONDITIONAL FIELDS FOR TEACHER */}
           {role === "teacher" && (
             <div className="border-t pt-5 space-y-4">
               <h3 className="text-lg font-medium">Teacher Info</h3>
@@ -241,8 +237,6 @@ const RegistrationForm = () => {
               />
             </div>
           )}
-
-          {/* CONDITIONAL FIELDS FOR OFFICE STAFF */}
           {role === "office_staff" && (
             <div className="border-t pt-5 space-y-4">
               <h3 className="text-lg font-medium">Office Staff Info</h3>
@@ -262,8 +256,6 @@ const RegistrationForm = () => {
               />
             </div>
           )}
-
-          {/* SUBMIT BUTTON */}
           <div className="pt-6 text-center">
             <Button type="submit" className="w-full md:w-auto">
               Submit
