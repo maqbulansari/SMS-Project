@@ -10,11 +10,15 @@ exports.Register = async(req,res)=>{
          const { role, email, psw } = req.body;
          const file = req.file;
                 const CheckingUser = await UserData.findOne({ email });
+                
+                
                 if (CheckingUser) return res.status(409).json({ msg: "user Already exist please try login" })
                 if (!file) {
                     return res.status(400).json({ error: 'plese upload a file' });
                 }
+                 
                 const RoleId = await RoleData.findOne({ name: role });
+                console.log('User',RoleId);
                 const salt = await bcrypt.genSaltSync(10);
                 const hashpsw = await bcrypt.hash(psw, salt);
                 const createUser = await UserData.create({
@@ -24,7 +28,10 @@ exports.Register = async(req,res)=>{
                         size: file.size,
                         data: file.buffer,
                     }
+                
+                    
                 });
+                
                 if(role === "Teacher"){
                     const createteacher = await teacherData.create({...req.body,user_id:createUser._id})
                      res.status(201).json({msg:"register success"})
@@ -35,6 +42,6 @@ exports.Register = async(req,res)=>{
                 }
                
     } catch (error) {
-        res.status(500).json({ msg: "register unsuccess", err: error.message })
+        res.status(500).json({ msg: "register unsuccess", err: error })
     }
 }

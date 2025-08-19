@@ -1,6 +1,5 @@
 import { useAuth } from '@/auth/AuthContext'
 import SingIn from '@/auth/component/SingIn'
-import { FeeSubmitForStudent } from '@/components/FeeSubmitForStudent'
 import SideBar from '@/components/SideBar'
 import AddmissionForm from '@/screens/AddmissionForm'
 import AdminDashboard from '@/screens/AdminDashboard'
@@ -20,25 +19,25 @@ const ProtectedRoute = ({ children }) => {
     return isAuthenticated ? children : <Navigate to="/login" replace />
 }
 const AppRoute = () => {
-    const {userData} =useAuth();
-console.log(userData.role);
+    const { userData } = useAuth();
+    console.log(userData.role);
 
-    
+
     return (
         <>
             <BrowserRouter>
                 <Routes>
-                         <Route path='/login' index element={ <SingIn />} />
-                          { userData.role === "Director"  ? <Route path='/' element={<ProtectedRoute> <SideBar /> </ProtectedRoute> }  >
-                           <Route path='/admin' element={<AdminDashboard />} />
-                           <Route path='/allteachers' element={<Allteachers/>} />
-                           <Route path='/allstudents' element={<AllStudents/>} />
-                           <Route path='/allofficestaff' element={<AllofficeStaff />} />
-                           <Route path='/addmission' element={<AddmissionForm />} />
-                           <Route path='/ragistration' element={<RagistrationForm />} />
-                    </Route> :
-                    <Route path='/user' element={<OtherUserCard/>}/> }
-                     <Route path='/user/fee/deposite/:id' element={<FeeDeposite/>}/>
+                    <Route path='/login' index element={<SingIn />} />
+                    {userData.role == "Director" && <Route path='/' element={<ProtectedRoute> <SideBar /> </ProtectedRoute>}  >
+                        <Route path='/admin' element={<AdminDashboard />} />
+                        <Route path='/allteachers' element={<Allteachers />} />
+                        <Route path='/allstudents' element={<AllStudents />} />
+                        <Route path='/allofficestaff' element={<AllofficeStaff />} />
+                        <Route path='/addmission' element={<AddmissionForm />} />
+                        <Route path='/ragistration' element={<RagistrationForm />} />
+                    </Route>}
+                        <Route path='/user' element={<OtherUserCard />} />
+                        <Route path='/user/fee/deposite/:id' element={<FeeDeposite />} />
                 </Routes>
             </BrowserRouter>
         </>

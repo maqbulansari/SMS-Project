@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { SideHeader } from '@/components/SideHeader'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -36,9 +35,6 @@ export const FeeSubmitForStudent = () => {
     }
   }
 
-const handleDailogBox = ()=>{
-
-} 
 
   useEffect(() => {
     gettingAllstudents()
@@ -48,6 +44,8 @@ const handleDailogBox = ()=>{
   <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
  <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4"> {data.map((item)=>{  
   const { user_pro } = item.user_info[0];
+  const { 
+fee_records } = item;
 const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
   return(
   
@@ -75,7 +73,7 @@ const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
         <Button  onClick={()=> Navigation(`fee/deposite/${item.user_id}`)}>Deposite Fee</Button>
        <div>
         </div> 
- <Dialog>
+ <Dialog >
       <DialogTrigger>Fee Record</DialogTrigger>
       
       <DialogContent
@@ -98,23 +96,26 @@ const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
                     <TableHead>Due Amount</TableHead>
                     <TableHead>Late Fee</TableHead>
                     <TableHead>Remark</TableHead>
-                    <TableHead>Sign</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                    <TableHead className="text-right">Sign</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">INV001</TableCell>
-                    <TableCell>August</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Tuition</TableCell>
-                    <TableCell>$250.00</TableCell>
-                    <TableCell>$0.00</TableCell>
-                    <TableCell>$0.00</TableCell>
-                    <TableCell>On Time</TableCell>
-                    <TableCell>✔️</TableCell>
-                    <TableCell className="text-right">$250.00</TableCell>
+                 {fee_records.map((d)=>(
+                     <TableRow>
+                    <TableCell className="font-medium">{d.receipt_number}</TableCell>
+                    <TableCell>{d.month}</TableCell>
+                    <TableCell>{d.payment_status}</TableCell>
+                    <TableCell>{d.fee_type}</TableCell>
+                    <TableCell>{d.total_amount}</TableCell>
+                    <TableCell>{d.due_amount}</TableCell>
+                    <TableCell>{d.late_fee}</TableCell>
+                    <TableCell>{d.remarks}</TableCell>
+                    <TableCell className="text-right">{d.signature}</TableCell>
                   </TableRow>
+
+
+                 ))
+                   }
                 </TableBody>
               </Table>
             </div>

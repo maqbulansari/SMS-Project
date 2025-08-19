@@ -19,21 +19,12 @@ import {
 } from "@/components/ui/select"
 import { SideHeader } from "@/components/SideHeader"
 import axios from "axios"
+import { toast } from "sonner"
 
 const RegistrationForm = () => {
   const form = useForm()
   const role = form.watch("role")
   const [filePreview, setFilePreview] = useState(null)
-
-  const onSubmit = async(data) => {
-    console.log("Form Submitted:", data);
-      try {
-      await axios.post("/",data)
-    } catch (error) {
-      console.log(error);
-      
-    }
-  }
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0]
@@ -44,6 +35,18 @@ const RegistrationForm = () => {
       const reader = new FileReader()
       reader.onloadend = () => setFilePreview(reader.result)
       reader.readAsDataURL(file)
+    }
+  }
+    const onSubmit = async(data) => {
+    console.log("Form Submitted:", data);
+      try {
+      await axios.post("http://localhost:3000/admin/register",data,{ headers: {
+        "Content-Type": "multipart/form-data",
+      },});
+       toast("Registration Successfully")
+    } catch (error) {
+      console.log(error);
+      toast("Registration Failed")
     }
   }
 
@@ -159,7 +162,7 @@ const RegistrationForm = () => {
           <FormItem>
             <FormLabel>Profile Picture</FormLabel>
             <FormControl>
-              <Input type="file" onChange={handleFileChange} />
+              <Input type="file" multiple={false} onChange={handleFileChange} />
             </FormControl>
             {filePreview && (
               <img
@@ -181,8 +184,8 @@ const RegistrationForm = () => {
                       <SelectValue placeholder="Select role" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="teacher">Teacher</SelectItem>
-                      <SelectItem value="office_staff">Office Staff</SelectItem>
+                      <SelectItem value="Teacher">Teacher</SelectItem>
+                      <SelectItem value="OfficeStaff">Office Staff</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -190,7 +193,7 @@ const RegistrationForm = () => {
               </FormItem>
             )}
           />
-          {role === "teacher" && (
+          {role === "Teacher" && (
             <div className="border-t pt-5 space-y-4">
               <h3 className="text-lg font-medium">Teacher Info</h3>
 
@@ -215,7 +218,7 @@ const RegistrationForm = () => {
                   <FormItem>
                     <FormLabel>PEN Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="PEN Number" {...field} />
+                      <Input type="Number" placeholder="PEN Number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -237,7 +240,7 @@ const RegistrationForm = () => {
               />
             </div>
           )}
-          {role === "office_staff" && (
+          {role === "OfficeStaff" && (
             <div className="border-t pt-5 space-y-4">
               <h3 className="text-lg font-medium">Office Staff Info</h3>
 

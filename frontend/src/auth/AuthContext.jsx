@@ -9,7 +9,8 @@ export const useAuth = () => {
 }
 
 const AuthContext = ({ children }) => {
-  const [userData, setuser] = useState({})
+  const [userData, setuser] = useState({});
+  const {role} = userData;
 
   const handleLogin = async (formdata, navigate) => {
 
@@ -21,10 +22,10 @@ const AuthContext = ({ children }) => {
       setuser(responce.data)
 
       
-      if (userData.role == "Director") 
-            {  return navigate("/admin") }
-      if(userData.role == "Teacher" || "student" || "Guardian") {
-        return navigate("/user")
+      if (role == "Director") 
+            { return navigate("/admin") }
+      if(role == "Teacher" ||role == "student" ||role == "Guardian") {
+      return  navigate("/user")
       }
 
 

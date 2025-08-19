@@ -7,13 +7,8 @@ import { useNavigate } from 'react-router-dom';
 const MainCard = () => {
     const {userData} = useAuth();
     const { user_pro } = userData.user;
-    const navigation = useNavigate("");
+ 
     
-      const handleLogOut = ()=>{
-     window.localStorage.removeItem("Token");
-    navigation("/login")
-  }
-
     const bufferData = user_pro?.data?.data;
 const base64String = btoa(
   new Uint8Array(bufferData)
@@ -42,9 +37,7 @@ const imageSrc = `data:${user_pro.mimetype};base64,${base64String}`;
       {/* <CardFooter className="max-w-md">
           <p className="whitespace-normal break-words">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo saepe dolore eaque reiciendis ratione error eligendi, consequuntur est porro corrupti natus voluptatem eius dignissimos dicta quam ut fuga rerum vitae.</p>
         </CardFooter> */}
-     {userData.role !== "Director" &&     <CardFooter className="fixed right-[10px]"> 
-            <Button onClick={()=>handleLogOut()}>Log Out</Button>
-        </CardFooter> }
+    
     
     </Card>
     </div>

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select"
 import { SideHeader } from "@/components/SideHeader"
 import axios from "axios"
+import { toast } from "sonner"
 
 const AddmissionForm = () => {
   const form = useForm({
@@ -67,7 +68,7 @@ const AddmissionForm = () => {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0]
     if (file) {
-      form.setValue("user_pro", file)
+      form.setValue("file", file)
       const reader = new FileReader()
       reader.onloadend = () => setFilePreview(reader.result)
       reader.readAsDataURL(file)
@@ -77,9 +78,15 @@ const AddmissionForm = () => {
   const onSubmit = async(data) => {
     console.log("Form Submitted:", data)
     try {
-      await axios.post("http://localhost:3000/user/addmission",data)
+      await axios.post("http://localhost:3000/user/addmission", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+      toast("Addmission Successfully")
     } catch (error) {
       console.log(error);
+      toast("Admission Failed");
       
     }
   }
@@ -240,7 +247,7 @@ const AddmissionForm = () => {
               <FormItem>
                 <FormLabel>Profile Picture</FormLabel>
                 <FormControl>
-                  <Input type="file" onChange={handleFileChange} />
+                  <Input type="file" multiple={false} onChange={handleFileChange} />
                 </FormControl>
                 {filePreview && (
                   <img

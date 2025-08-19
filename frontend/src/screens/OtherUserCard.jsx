@@ -1,6 +1,7 @@
 import { useAuth } from '@/auth/AuthContext'
 import { FeeSubmitForStudent } from '@/components/FeeSubmitForStudent'
 import MainCard from '@/components/MainCard'
+import { SideHeader } from '@/components/SideHeader'
 import { TableAttendance } from '@/components/TableAttendance'
 import React from 'react'
 
@@ -9,12 +10,14 @@ export const OtherUserCard = () => {
 const {userData} = useAuth()
 const role = userData.role;
   return (
-
-    <div className="mt-20 px-4 lg:px-6">
+     <div className="@container/main flex flex-1 flex-col gap-2"> 
+      <SideHeader/>
+    <div className="mt-10 px-4 lg:px-6">
+     
       <MainCard />
       {role === "Teacher" ? <TableAttendance/>:
       <FeeSubmitForStudent/>
       }
-    </div>
+    </div> </div>
   )
 } 
