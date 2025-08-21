@@ -13,7 +13,5 @@ const class_periodSchema = new mongoose.Schema({
         type:String,
         required:true
     }
-
-
 })
 module.exports =mongoose.model("class_periodData",class_periodSchema)

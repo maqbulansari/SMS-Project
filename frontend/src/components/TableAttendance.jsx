@@ -26,6 +26,8 @@ export const TableAttendance = () => {
   const [students, setStudents] = useState([]);
   const [getAttendance, setgetAttendance] = useState([]);
   const [attendance, setAttendance] = useState({}); 
+  console.log('students', students);
+  
 
   useEffect(() => {
     gettingAllStudents();
@@ -64,6 +66,7 @@ export const TableAttendance = () => {
     const payload = students.map((s) => ({
       student_id: s._id,
       status: attendance[s._id] ? true : false,
+      markedAt:new Date()
     }));
 
     try {
@@ -98,6 +101,7 @@ export const TableAttendance = () => {
                   </TableCell>
                   <TableCell>{school_year_info[0]?.name}</TableCell>
                   <TableCell>{year_level_info[0]?.lvl_name}</TableCell>
+                  {/* <TableCell>{dateOnlyISO}</TableCell> */}
                   <TableCell className="text-right">
                     <div className="flex justify-end items-center gap-2">
                       <Label>
@@ -116,58 +120,56 @@ export const TableAttendance = () => {
             })}
           </TableBody>
         </Table>
-        <Button type="submit">Submit</Button>
-         <Dialog >
-      <DialogTrigger>Fee Record</DialogTrigger>
-      
-      <DialogContent
-        className="w-fit max-w-none p-4"
-        style={{ minWidth: 'unset', maxWidth: 'unset' }}
-      >
+        <Button type="submit" className="mr-2">Submit</Button>
+      </form>
+      <div>
+   <Dialog >
+      <DialogTrigger >View Attendance</DialogTrigger>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Fee Records</DialogTitle>
-          <DialogDescription asChild>
+          <DialogTitle>Attendance Records</DialogTitle>
+          <DialogDescription >
             <div>
               <Table>
-                <TableCaption>A list of your recent invoices.</TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[100px]">Receipt</TableHead>
-                    <TableHead>Month</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Fee Type</TableHead>
-                    <TableHead>Total Amount</TableHead>
-                    <TableHead>Due Amount</TableHead>
-                    <TableHead>Late Fee</TableHead>
-                    <TableHead>Remark</TableHead>
-                    <TableHead className="text-right">Sign</TableHead>
+                <TableCaption>A list of Attendance.</TableCaption>
+                <TableHeader >
+                  <TableRow className="flex justify-between">
+                    <TableHead className="w-[100px]">markedAt</TableHead>
+                    <TableHead>StudentName</TableHead>
+                    <TableHead>Grade</TableHead>
+                    <TableHead className="text-right">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                 {getAttendance.map((d)=>(
-                     <TableRow>
-                    <TableCell className="font-medium">{d.receipt_number}</TableCell>
-                    <TableCell>{d.month}</TableCell>
-                    <TableCell>{d.payment_status}</TableCell>
+                 {getAttendance.map((d)=>
+                 { const {markedAt} = d;
+                 const dateOnlyISO = markedAt?.split("T")[0];  
+                 console.log("attdata",d);
+                 
+                  return(
+                  
+                    <TableRow key={d._id} className="flex justify-between">
+                    <TableCell className="font-medium">{dateOnlyISO}</TableCell>
+                    <TableCell>{d.user_info[0]?.first_name}</TableCell>
                     <TableCell>{d.fee_type}</TableCell>
                     <TableCell>{d.total_amount}</TableCell>
                     <TableCell>{d.due_amount}</TableCell>
                     <TableCell>{d.late_fee}</TableCell>
                     <TableCell>{d.remarks}</TableCell>
-                    <TableCell className="text-right">{d.signature}</TableCell>
+                    <TableCell className="text-right">{d.status === true ? "Present":"Absent"}</TableCell>
                   </TableRow>
-
-
-                 ))
+                 )})
                    }
                 </TableBody>
               </Table>
             </div>
+            
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>
-      </form>
+      </div>
+   
     </div>
   );
 };

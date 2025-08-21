@@ -8,7 +8,8 @@ status:{
 },
 sch_year_id: mongoose.Schema.Types.ObjectId,
 markedAt:{
-    type:Date
+    type:Date,
+    required:true
 },
 teacher_id: mongoose.Schema.Types.ObjectId,
 year_lvl__id: mongoose.Schema.Types.ObjectId,

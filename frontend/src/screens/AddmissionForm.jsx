@@ -76,11 +76,13 @@ const AddmissionForm = () => {
   }
 
   const onSubmit = async(data) => {
-    console.log("Form Submitted:", data)
+    console.log("Form Submitted:", data);
+    const Token = localStorage.getItem("Token");
     try {
       await axios.post("http://localhost:3000/user/addmission", data, {
       headers: {
         "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${Token}`
       },
     });
       toast("Addmission Successfully")

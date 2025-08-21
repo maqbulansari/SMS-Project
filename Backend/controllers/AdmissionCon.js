@@ -35,8 +35,8 @@ exports.StudentAdmission = async (req, res) => {
             }
         });
 
-        const createStudent =await StudentData.create({...req.body,user_id:createUser.id})
-        const createGuardian =await GuardianData.create({...req.body,user_id:createUser.id})
+        const createStudent =await StudentData.create({...req.body,user_id:createUser._id})
+        const createGuardian =await GuardianData.create({...req.body,user_id:createUser._id})
         const createStuGuar = await StudentGuardianData.create({stu_id:createStudent._id,Guar_id:createGuardian._id})
         const createFee = await FeeRecData.create({...req.body,student_id:createStudent._id})
         const findschyear = await SchoolYearData.findOne({name})

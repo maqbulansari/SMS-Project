@@ -34,6 +34,23 @@ exports.getStudentsAttendance = async(req,res)=>{
           as: 'user_info'
         }
       },
+      {
+        $lookup: {
+          from: 'studentyearlvldatas',
+          localField: 'student_id',
+          foreignField: 'student_id',
+          as: 'student_year_info'
+        }
+      },
+
+      {
+        $lookup: {
+          from: 'yearlvldatas',
+          localField: 'student_year_info.year_lvl_id',
+          foreignField: '_id',
+          as: 'year_level_info'
+        }
+      },
     ]
     );
      res.status(201).json({ msg: "success",  getting });

@@ -6,6 +6,7 @@ import AdminDashboard from '@/screens/AdminDashboard'
 import AllofficeStaff from '@/screens/AllofficeStaff'
 import AllStudents from '@/screens/AllStudents'
 import Allteachers from '@/screens/Allteachers'
+import { ClassPeriodForm } from '@/screens/ClassPeriodForm'
 import { FeeDeposite } from '@/screens/FeeDeposite'
 import { OtherUserCard } from '@/screens/OtherUserCard'
 import RagistrationForm from '@/screens/RagistrationForm'
@@ -35,6 +36,7 @@ const AppRoute = () => {
                         <Route path='/allofficestaff' element={<AllofficeStaff />} />
                         <Route path='/addmission' element={<AddmissionForm />} />
                         <Route path='/ragistration' element={<RagistrationForm />} />
+                        <Route path='/classperiod' element={<ClassPeriodForm />} />
                     </Route>}
                         <Route path='/user' element={<OtherUserCard />} />
                         <Route path='/user/fee/deposite/:id' element={<FeeDeposite />} />

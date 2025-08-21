@@ -29,7 +29,8 @@ const SideBar = () => {
     // icon: Inbox,
   },
   {
-    title: "Inbox",
+    title: "ClassPeriod",
+    to:"/classperiod"
     // url: "#",
     // icon: Inbox,
   },
