@@ -93,7 +93,8 @@ const AddmissionForm = () => {
     }
   }
 
-  return (<div className="@container/main flex flex-1 flex-col gap-2">
+  return (
+  <div className="@container/main flex flex-1 flex-col gap-2">
     <SideHeader />
     <div className="max-w-3xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-md border border-gray-200">
       <h2 className="text-2xl font-semibold mb-6 text-center">Student Registration Form</h2>

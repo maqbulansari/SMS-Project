@@ -6,11 +6,11 @@ term_number:{
         type:Number,
         required:true
     },
-st_date:{
+Term_st_date:{
         type:Date,
         required:true
     },
-end_date:{
+term_end_date:{
         type:Date,
         required:true
     },

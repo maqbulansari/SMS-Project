@@ -13,11 +13,11 @@ exam_date:{
         type:Date,
         required:true
     },
-st_time:{
+exam_st_time:{
         type:Date,
         required:true
     },
-end_time:{
+exam_end_time:{
         type:Date,
         required:true
     },

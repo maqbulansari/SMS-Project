@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ExamTypeSchema = new mongoose.Schema({
 
-name:{
+Exam_Type_name:{
         type:String,
         required:true }
 

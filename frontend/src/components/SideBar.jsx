@@ -35,7 +35,8 @@ const SideBar = () => {
     // icon: Inbox,
   },
   {
-    title: "Calendar",
+    title: "Exam",
+    to:"/exam"
     // url: "#",
     // icon: Calendar,
   },
