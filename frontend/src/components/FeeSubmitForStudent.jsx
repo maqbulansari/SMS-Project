@@ -71,9 +71,8 @@ const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
           </div>
         </CardFooter>
         <Button  onClick={()=> Navigation(`fee/deposite/${item.user_id}`)}>Deposite Fee</Button>
-       <div>
-        </div> 
- <Dialog >
+       <div className='flex justify-center'>
+         <Dialog >
       <DialogTrigger>Fee Record</DialogTrigger>
       
       <DialogContent
@@ -82,14 +81,14 @@ const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
       >
         <DialogHeader>
           <DialogTitle>Fee Records</DialogTitle>
-          <DialogDescription asChild>
+          <DialogDescription>  </DialogDescription>
             <div>
               <Table>
                 <TableCaption>A list of your recent invoices.</TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[100px]">Receipt</TableHead>
-                    <TableHead>Month</TableHead>
+                    <TableHead>Date</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Fee Type</TableHead>
                     <TableHead>Total Amount</TableHead>
@@ -100,11 +99,14 @@ const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                 {fee_records.map((d)=>(
-                     <TableRow>
+                 {fee_records.map((d)=>{
+                  const {month}= d
+                   const dateOnlyISO = month?.split("T")[0];
+                 return(
+                     <TableRow key={d._id}>
                     <TableCell className="font-medium">{d.receipt_number}</TableCell>
-                    <TableCell>{d.month}</TableCell>
-                    <TableCell>{d.payment_status}</TableCell>
+                    <TableCell>{dateOnlyISO}</TableCell>
+                    <TableCell>{d.payment_status == true? "Paid":"Pending"}</TableCell>
                     <TableCell>{d.fee_type}</TableCell>
                     <TableCell>{d.total_amount}</TableCell>
                     <TableCell>{d.due_amount}</TableCell>
@@ -114,15 +116,17 @@ const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
                   </TableRow>
 
 
-                 ))
+                 )})
                    }
                 </TableBody>
               </Table>
             </div>
-          </DialogDescription>
+         
         </DialogHeader>
       </DialogContent>
     </Dialog>
+        </div> 
+
       </Card>
    )}
    )}

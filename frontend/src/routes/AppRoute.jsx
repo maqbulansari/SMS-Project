@@ -11,6 +11,7 @@ import { Exam } from '@/screens/Exam'
 import { FeeDeposite } from '@/screens/FeeDeposite'
 import { OtherUserCard } from '@/screens/OtherUserCard'
 import RagistrationForm from '@/screens/RagistrationForm'
+import { ReportCard } from '@/screens/ReportCard'
 import React from 'react'
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
@@ -41,6 +42,7 @@ const AppRoute = () => {
                         <Route path='/exam' element={<Exam />} />
                     </Route>}
                         <Route path='/user' element={<OtherUserCard />} />
+                        <Route path='/reportcard' element={<ReportCard />} />
                         <Route path='/user/fee/deposite/:id' element={<FeeDeposite />} />
                 </Routes>
             </BrowserRouter>

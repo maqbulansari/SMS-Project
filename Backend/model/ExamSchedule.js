@@ -14,11 +14,11 @@ exam_date:{
         required:true
     },
 exam_st_time:{
-        type:Date,
+        type:String,
         required:true
     },
 exam_end_time:{
-        type:Date,
+        type:String,
         required:true
     },
 

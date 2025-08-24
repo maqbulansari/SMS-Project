@@ -21,18 +21,28 @@ import { Label } from '@radix-ui/react-dropdown-menu';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 export const TableAttendance = () => {
   const [students, setStudents] = useState([]);
   const [getAttendance, setgetAttendance] = useState([]);
-  const [attendance, setAttendance] = useState({}); 
+  const [attendance, setAttendance] = useState({});
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedGrade, setSelectedGrade] = useState('');
+
+
   console.log('students', students);
-  
+
 
   useEffect(() => {
     gettingAllStudents();
     gettingAttendance();
   }, []);
+
+  const filteredAttendance = selectedDate
+    ? getAttendance.filter((d) => d.markedAt?.split("T")[0] === selectedDate)
+    : getAttendance;
+
 
   const gettingAllStudents = async () => {
     try {
@@ -47,7 +57,7 @@ export const TableAttendance = () => {
       const response = await axios.get('http://localhost:3000/attendance');
       setgetAttendance(response.data.getting);
       console.log(response.data.getting);
-      
+
     } catch (error) {
       console.error(error);
     }
@@ -59,6 +69,14 @@ export const TableAttendance = () => {
       [studentId]: isChecked,
     }));
   };
+  const uniqueGrades = Array.from(
+    new Set(students.map((s) => s.year_level_info[0]?.lvl_name).filter(Boolean))
+  );
+
+  const filteredStudents = selectedGrade
+    ? students.filter((s) => s.year_level_info[0]?.lvl_name === selectedGrade)
+    : students;
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +84,7 @@ export const TableAttendance = () => {
     const payload = students.map((s) => ({
       student_id: s._id,
       status: attendance[s._id] ? true : false,
-      markedAt:new Date()
+      markedAt: new Date()
     }));
 
     try {
@@ -81,6 +99,79 @@ export const TableAttendance = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <div className='flex justify-between'>
+        <div className="my-2">
+          <Label htmlFor="grade-filter">Filter by Grade</Label>
+          <Select
+            id="grade-filter"
+            value={selectedGrade || ''}
+            onValueChange={(value) => setSelectedGrade(value)}
+            className="w-[200px] border border-gray-300 rounded p-2"
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Grade" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem >All Grades</SelectItem>
+              {uniqueGrades.map((grade) => (
+                <SelectItem key={grade} value={grade}>
+                  {grade}
+                </SelectItem>
+              ))}
+
+            </SelectContent>
+
+          </Select>
+        </div>
+         <Dialog  >
+          <DialogTrigger  >View Attendance</DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Attendance Records</DialogTitle>
+              <DialogDescription asChild>
+                  <div>
+                  <Label htmlFor="filter-date">Filter by Date</Label>
+                  <Input
+                    id="filter-date"
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="w-[200px]"
+                  /> </div>
+              </DialogDescription>
+              <div className="text-muted-foreground text-sm">
+                <Table>
+                  <TableCaption>A list of Attendance.</TableCaption>
+                  <TableHeader>
+                    <TableRow className="flex justify-between">
+                      <TableHead className="w-[100px]">markedAt</TableHead>
+                      <TableHead>StudentName</TableHead>
+                      <TableHead>Grade</TableHead>
+                      <TableHead className="text-right">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredAttendance.map((d) => {
+                      const dateOnlyISO = d.markedAt?.split("T")[0];
+                      return (
+                        <TableRow key={d._id} className="flex justify-between">
+                          <TableCell className="font-medium">{dateOnlyISO}</TableCell>
+                          <TableCell>{d.user_info[0]?.first_name}</TableCell>
+                          <TableCell>{d.year_level_info?.[0]?.lvl_name || '-'}</TableCell>
+                          <TableCell className="text-right">
+                            {d.status ? 'Present' : 'Absent'}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+            </DialogHeader>
+          </DialogContent>
+
+        </Dialog>
+</div>
         <Table>
           <TableCaption>All students attendance list</TableCaption>
           <TableHeader>
@@ -92,7 +183,7 @@ export const TableAttendance = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {students.map((s) => {
+            {filteredStudents.map((s) => {
               const { user_info, school_year_info, year_level_info, _id } = s;
               return (
                 <TableRow key={_id}>
@@ -122,54 +213,6 @@ export const TableAttendance = () => {
         </Table>
         <Button type="submit" className="mr-2">Submit</Button>
       </form>
-      <div>
-   <Dialog >
-      <DialogTrigger >View Attendance</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Attendance Records</DialogTitle>
-          <DialogDescription >
-            <div>
-              <Table>
-                <TableCaption>A list of Attendance.</TableCaption>
-                <TableHeader >
-                  <TableRow className="flex justify-between">
-                    <TableHead className="w-[100px]">markedAt</TableHead>
-                    <TableHead>StudentName</TableHead>
-                    <TableHead>Grade</TableHead>
-                    <TableHead className="text-right">Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                 {getAttendance.map((d)=>
-                 { const {markedAt} = d;
-                 const dateOnlyISO = markedAt?.split("T")[0];  
-                 console.log("attdata",d);
-                 
-                  return(
-                  
-                    <TableRow key={d._id} className="flex justify-between">
-                    <TableCell className="font-medium">{dateOnlyISO}</TableCell>
-                    <TableCell>{d.user_info[0]?.first_name}</TableCell>
-                    <TableCell>{d.fee_type}</TableCell>
-                    <TableCell>{d.total_amount}</TableCell>
-                    <TableCell>{d.due_amount}</TableCell>
-                    <TableCell>{d.late_fee}</TableCell>
-                    <TableCell>{d.remarks}</TableCell>
-                    <TableCell className="text-right">{d.status === true ? "Present":"Absent"}</TableCell>
-                  </TableRow>
-                 )})
-                   }
-                </TableBody>
-              </Table>
-            </div>
-            
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
-      </div>
-   
     </div>
   );
 };

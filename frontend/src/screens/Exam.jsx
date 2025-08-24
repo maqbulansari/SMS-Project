@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormField,
@@ -7,325 +7,345 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select"
-import { SideHeader } from "@/components/SideHeader"
-import axios from "axios"
-import { toast } from "sonner"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { SideHeader } from "@/components/SideHeader";
+import axios from "axios";
+import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Exam = () => {
-      const form = useForm({
-      defaultValues: {
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    email: "",
-    psw: "",
-    ph_no: "",
-    gender: "",
-    role: "Student",
-    date_of_birth: "",
-    father_name: "",
-    mother_name: "",
-    anu_income: "",
-    qualification: "",
-    occupation: "",
-    fee_type: "",
-    month: "",
-    total_amount: "",
-    paid_amount: "",
-    due_amount: "",
-    receipt_number: "",
-    late_fee: "",
-    payment_status: false,
-    remarks: "",
-    signature: "",
-    name: "",
-    st_date: "",
-    end_date: "",
-    lvl_name: "",
-    amount: "",
-    admission_date: "",
-    Pre_Sch_name: "",
-    Pre_Std_name: "",
-    tc_latter: false,
-    emr_c_number: "",
-    address: "",
-    file: null,
-  },
-  })
 
-  const [filePreview, setFilePreview] = useState(null)
+   const [tdata,settdata] = useState([]);
+  const [sdata,setsdata] = useState([]);
+  const [ydata,setydata] = useState([]);
+  const [sydata,setsydata] = useState([]);
+  const form = useForm({
+    defaultValues: {
+      term_number: "",
+      Term_st_date: "",
+      term_end_date: "",
+
+      Exam_Type_name: "",
+
+      exam_date: "",
+      exam_st_time: "",
+      exam_end_time: "",
+
+      total_marks: "",
+      paper_code: "",
+
+      lvl_name: "", 
+      name: "",     
+      sub_id: "",
+      teacher_id: "",
+
+      exampaper: null,
+    },
+  });
 
   const handleFileChange = (e) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      form.setValue("file", file)
-      const reader = new FileReader()
-      reader.onloadend = () => setFilePreview(reader.result)
-      reader.readAsDataURL(file)
+    const exampaper = e.target.files?.[0];
+    if (exampaper) {
+      form.setValue("exampaper", exampaper);
     }
-  }
+  };
 
-  const onSubmit = async(data) => {
-    console.log("Form Submitted:", data);
-    const Token = localStorage.getItem("Token");
-    try {
-      await axios.post("http://localhost:3000/user", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Authorization": `Bearer ${Token}`
-      },
-    });
-      toast("Addmission Successfully")
-    } catch (error) {
-      console.log(error);
-      toast("Admission Failed");
-      
-    }
+
+
+const gettingteachers = async()=>{
+  try {
+    const response = await axios.get("http://localhost:3000/admin/getteacher")
+    console.log("te",response.data.teachers);
+    settdata(response.data.teachers)
+  } catch (error) {
+    console.log(error);
+    
   }
+}
+const gettingSub = async()=>{
+  try {
+    const response = await axios.get("http://localhost:3000/sub")
+    console.log("sub",response.data.data);
+    setsdata(response.data.data)
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+const gettingYearlvl = async()=>{
+  try {
+    const response = await axios.get("http://localhost:3000/yrlvl")
+    console.log("yearlvl",response.data.data);
+    setydata(response.data.data)
+  } catch (error) {
+    console.log(error);
+    
+  } }
+const gettingSchYearlvl = async()=>{
+  try {
+    const response = await axios.get("http://localhost:3000/schyear")
+    console.log("schyearlvl",response.data.data);
+    setsydata(response.data.data)
+  } catch (error) {
+    console.log(error);
+    
+  }
+} 
+useEffect(()=>{
+  gettingteachers();
+  gettingSub();
+  gettingYearlvl();
+  gettingSchYearlvl();
+},[])
+
+  const onSubmit = async (data) => {
+    const Token = localStorage.getItem("Token");
+    console.log(data);
+    
+
+    try {
+      await axios.post("http://localhost:3000/exam", data, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+      });
+      toast("Exam Created Successfully");
+      form.reset();
+    } catch (error) {
+      console.error(error);
+      toast("Exam Creation Failed");
+    }
+  };
+
   return (
     <div className="@container/main flex flex-1 flex-col gap-2">
-    <SideHeader />
-    <div className="max-w-3xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-md border border-gray-200">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Create Exam  Form</h2>
+      <SideHeader />
+      <div className="max-w-3xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-md border border-gray-200">
+        <h2 className="text-2xl font-semibold mb-6 text-center">Create Exam Form</h2>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-   
-          <section className="space-y-4">
-            <h3 className="text-xl font-semibold border-b pb-2">Exam Term</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-             <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Year</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value || ""}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Gender" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Male">Male</SelectItem>
-                          <SelectItem value="Female">Female</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                          <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {/* Term Section */}
+            <section className="space-y-4">
+              <h3 className="text-xl font-semibold border-b pb-2">Exam Term</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="term_number"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Term Number</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="1" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="Term_st_date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Start Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="term_end_date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>End Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </section>
+
+            {/* Exam Type Section */}
+            <section className="space-y-4">
+              <h3 className="text-xl font-semibold border-b pb-2">Exam Type</h3>
               <FormField
                 control={form.control}
-                name="middle_name"
+                name="Exam_Type_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Term Number</FormLabel>
+                    <FormLabel>Exam Type</FormLabel>
                     <FormControl>
-                      <Input placeholder="Middle Name" {...field} />
+                      <Input placeholder="e.g., Midterm, Final" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
               />
-           <FormField
-                control={form.control}
-                name="date_of_birth"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            </section>
+
+            {/* Exam Schedule Section */}
+            <section className="space-y-4">
+              <h3 className="text-xl font-semibold border-b pb-2">Exam Schedule</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="exam_date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Exam Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="exam_st_time"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Start Time</FormLabel>
+                      <FormControl>
+                        <Input type="time" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="exam_end_time"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>End Time</FormLabel>
+                      <FormControl>
+                        <Input type="time" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </section>
+
+            {/* Paper Details Section */}
+            <section className="space-y-4">
+              <h3 className="text-xl font-semibold border-b pb-2">Exam Paper Details</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="total_marks"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Total Marks</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="e.g., 100" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="paper_code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Paper Code</FormLabel>
+                      <FormControl>
+                        <Input type="text" placeholder="e.g., MATH101" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                 control={form.control}
-                name="date_of_birth"
+                 name="lvl_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>End Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </section>
-
-       
-          <section className="space-y-4">
-            <h3 className="text-xl font-semibold border-b pb-2">Exam Type Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="father_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Father's Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </section>
-          <section className="space-y-4">
-            <h3 className="text-xl font-semibold border-b pb-2">Exam Schedule</h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                   <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>SchoolYear</FormLabel>
+                    <FormLabel>Year Level</FormLabel>
                     <FormControl>
                       <Select onValueChange={field.onChange} value={field.value || ""}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Gender" />
+                          <SelectValue placeholder="Select Year" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Male">Male</SelectItem>
-                          <SelectItem value="Female">Female</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                          <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
-                        </SelectContent>
+                      {  ydata.map((y)=>
+                          <SelectItem key={y._id} value={y.lvl_name}>{y.lvl_name}</SelectItem>
+                      )
+                       }  </SelectContent>
                       </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
-                   <FormField
-                control={form.control}
-                name="date_of_birth"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Exam Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-                   <FormField
-                control={form.control}
-                name="date_of_birth"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Time</FormLabel>
-                    <FormControl>
-                      <Input type="time" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-                 <FormField
-                control={form.control}
-                name="date_of_birth"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End Time</FormLabel>
-                    <FormControl>
-                      <Input type="time" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </section>
-
-    
-          <section className="space-y-4">
-            <h3 className="text-xl font-semibold border-b pb-2">Exam Paper</h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-             <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>YearLevel</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value || ""}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Gender" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Male">Male</SelectItem>
-                          <SelectItem value="Female">Female</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                          <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-           
                <FormField
                 control={form.control}
-                name="gender"
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>School Year</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value || ""}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Year" />
+                        </SelectTrigger>
+                        <SelectContent>
+                      {  sydata.map((s)=>
+                          <SelectItem key={s._id} value={s.name}>{s.name}</SelectItem>
+                      )
+                       }  </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+             <FormField
+                control={form.control}
+                name="sub_id"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Subject</FormLabel>
                     <FormControl>
                       <Select onValueChange={field.onChange} value={field.value || ""}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Gender" />
+                          <SelectValue placeholder="Select Subject" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Male">Male</SelectItem>
-                          <SelectItem value="Female">Female</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                          <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
-                        </SelectContent>
+                      {  sdata.map((s)=>
+                          <SelectItem key={s._id} value={s._id}>{s.subject_name}</SelectItem>
+                      )
+                       }  </SelectContent>
                       </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-                 <FormField
+               <FormField
                 control={form.control}
-                name="gender"
+                name="teacher_id"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Teacher</FormLabel>
                     <FormControl>
                       <Select onValueChange={field.onChange} value={field.value || ""}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Gender" />
+                          <SelectValue placeholder="Select Teacher" />
                         </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Male">Male</SelectItem>
-                          <SelectItem value="Female">Female</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                          <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
+                        <SelectContent>{
+                          tdata.map((t)=>{const {user_info} = t;
+                            return(
+                                 <SelectItem value={t._id}>{user_info[0]?.first_name}</SelectItem>
+                            )
+                          })
+                          }
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -333,57 +353,26 @@ export const Exam = () => {
                   </FormItem>
                 )}
               />
-                 <FormField
-                control={form.control}
-                name="father_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Total Marks</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Father's Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-                 <FormField
-                control={form.control}
-                name="father_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Paper Code</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Father's Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormItem>
-                <FormLabel>Profile Picture</FormLabel>
-                <FormControl>
-                  <Input type="file" multiple={false} onChange={handleFileChange} />
-                </FormControl>
-                {filePreview && (
-                  <img
-                    src={filePreview}
-                    alt="Preview"
-                    className="w-24 h-24 rounded-md mt-2 object-cover border"
-                  />
-                )}
-              </FormItem>
-            </div>
-          </section>
+              </div>
 
-          <div className="pt-6 text-center">
-            <Button type="submit" className="w-full md:w-auto">
-              Submit
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div> </div>
-  )
-}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormItem>
+                  <FormLabel>Upload Exam Paper</FormLabel>
+                  <FormControl>
+                    <Input type="file" multiple={false} accept=".pdf,.doc,.docx,.jpg,.png" onChange={handleFileChange} />
+                  </FormControl>
+                </FormItem>
+              </div>
+            </section>
+
+            <div className="pt-6 text-center">
+              <Button type="submit" className="w-full md:w-auto">
+                Submit
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </div>
+  );
+};

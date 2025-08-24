@@ -10,7 +10,7 @@ total_marks:{
         required:true
     },
 paper_code:{
-        type:Number,
+        type:String,
         required:true
     },
 teacher_id:mongoose.Schema.Types.ObjectId,

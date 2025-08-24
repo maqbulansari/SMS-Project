@@ -11,7 +11,7 @@ exports.createReportCard = async(req,res)=>{
         const findstuYrLvl = await StudentYearLvlData.findOne({student_id:_id});
         const findStudentAttendanceData = await StudentAttendanceData.find({$In:{student_id}});
         const createReportcard = await ReportCardData.create({...req.body,stu_lvl_id:findstuYrLvl._id,attendance_id:findStudentAttendanceData});
-        const createSubScore = await SubjectScoreData.create({marks_ob_id:createstuMarks.Id,report_card_id:createReportcard._id})
+        const createSubScore = await SubjectScoreData.create({marks_ob_id:createstuMarks._id,report_card_id:createReportcard._id})
         res.status(200).json("created reportCard successfully")
 
     } catch (error) {

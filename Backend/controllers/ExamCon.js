@@ -8,6 +8,7 @@ const schYearData = require("../model/SchoolYear.js");
 exports.createExam = async(req,res)=>{
     const {lvl_name,name} = req.body;
       const exampaper = req.file;
+    
        if (!exampaper) {
             return res.status(400).json({ error: 'plese upload exam paper' });
         }
@@ -17,12 +18,12 @@ exports.createExam = async(req,res)=>{
       const findYearlvl = await YearlvlData.findOne({lvl_name});
       const findschYear = await schYearData.findOne({name});
       const createexamSchedule = await ExamScheduleData.create({...req.body,exam_type_id:createexamType._id,year_lvl_id:findYearlvl._id,sch_year_id:findschYear._id});
-      const createexamPaper = await ExamParerData.create({...req.body,exam_type_id:createexamType._id,term_id:createterm._id,sub_id:findsub._id,year_lvl_id:findYearlvl._id,uploadfile:{
-  filename: String,
-  mimetype: String,
-  size: Number,
-  data: Buffer,
-      }});
+      const createexamPaper = await ExamParerData.create({...req.body,exam_type_id:createexamType._id,term_id:createterm._id,year_lvl_id:findYearlvl._id,uploadfile:{
+                filename: exampaper.originalname,
+                mimetype: exampaper.mimetype,
+                size: exampaper.size,
+                data: exampaper.buffer,
+            }});
       res.status(201).json("Exam Created Success");
 } catch (error) {
      res.status(500).json({msg:"unsuccess creating exam",err:error.message})

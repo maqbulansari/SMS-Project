@@ -24,7 +24,7 @@ const AuthContext = ({ children }) => {
       
       if (role == "Director") 
             { return navigate("/admin") }
-      if(role == "Teacher" ||role == "student" ||role == "Guardian") {
+      if(role == "Teacher" ||role == "student" ||role == "Guardian" ||role == "OfficeStaff") {
       return  navigate("/user")
       }
 

@@ -13,6 +13,10 @@ export function SideHeader() {
     navigation("/login")
   }
 
+  const handleReporyCard = ()=>{
+    navigation("/reportcard")
+  }
+
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -24,7 +28,7 @@ export function SideHeader() {
         />
         <h1 className="text-base font-medium">Dashboard</h1>
         <div className="ml-auto flex items-center gap-2">
-          { userData.role === "Teacher" && <Button variant="ghost">Report Card</Button>
+          { userData.role === "Teacher" && <Button onClick={()=>handleReporyCard()} variant="ghost">Report Card</Button>
 
           }
          { userData.role === "Director" ? <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
