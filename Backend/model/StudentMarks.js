@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const StudentMarksSchema = new mongoose.Schema({
-    marks_type_id:mongoose.Schema.Types.ObjectId,
+    exam_type_id:mongoose.Schema.Types.ObjectId,
     sub_id:mongoose.Schema.Types.ObjectId,
     sch_year_id:mongoose.Schema.Types.ObjectId,
     stu_id:mongoose.Schema.Types.ObjectId,

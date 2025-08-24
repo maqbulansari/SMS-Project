@@ -20,6 +20,7 @@ const AllTeacherRoute = require("./routes/AllteacherRoute.js")
 const AllofficeStaffRoute = require("./routes/AlloficeStaffRoute.js")
 const StudentAttendanceRoute = require("./routes/StuAttendanceRoute.js")
 const ExamRoute = require("./routes/ExamRoute.js")
+const ExamTypeRoute = require("./routes/ExamTypeRoute.js")
 const ReportCardRoute = require("./routes/ReportCardRoute.js")
 
 DBconnect()
@@ -38,6 +39,7 @@ app.use("/admin",AllTeacherRoute)
 app.use("/admin",AllofficeStaffRoute)
 app.use("/attendance",StudentAttendanceRoute)
 app.use("/exam",ExamRoute)
+app.use("/examtype",ExamTypeRoute)
 app.use("/reportcard",ReportCardRoute)
 
 

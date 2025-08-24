@@ -70,7 +70,15 @@ exports.GetAllStuInfo = async(req,res)=>{
           foreignField: '_id',
           as: 'school_year_info'
         }
-      }
+      },
+      {
+              $lookup: {
+                from: 'stuattendancedatas',         
+                localField: '_id',                  
+                foreignField: 'student_id',      
+                as: 'attendance_records'
+              }
+            },
     ]);
 
     res.status(200).json({msg:"success",students});

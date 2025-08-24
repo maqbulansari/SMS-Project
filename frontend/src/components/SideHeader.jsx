@@ -10,11 +10,12 @@ export function SideHeader() {
  const navigation = useNavigate()
       const handleLogOut = ()=>{
      window.localStorage.removeItem("Token");
+     window.localStorage.removeItem("UserData");
     navigation("/login")
   }
 
   const handleReporyCard = ()=>{
-    navigation("/reportcard")
+    navigation("/allstudents")
   }
 
 

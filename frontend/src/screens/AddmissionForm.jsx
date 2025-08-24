@@ -82,7 +82,6 @@ const AddmissionForm = () => {
       await axios.post("http://localhost:3000/user/addmission", data, {
       headers: {
         "Content-Type": "multipart/form-data",
-        "Authorization": `Bearer ${Token}`
       },
     });
       toast("Addmission Successfully")

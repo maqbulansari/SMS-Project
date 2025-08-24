@@ -40,10 +40,11 @@ const AppRoute = () => {
                         <Route path='/ragistration' element={<RagistrationForm />} />
                         <Route path='/classperiod' element={<ClassPeriodForm />} />
                         <Route path='/exam' element={<Exam />} />
-                    </Route>}
-                        <Route path='/user' element={<OtherUserCard />} />
+                     </Route>}
+                       <Route path='/user' element={<OtherUserCard />} />
                         <Route path='/reportcard' element={<ReportCard />} />
                         <Route path='/user/fee/deposite/:id' element={<FeeDeposite />} />
+                        <Route path='/allstudents' element={<AllStudents />} />
                 </Routes>
             </BrowserRouter>
         </>

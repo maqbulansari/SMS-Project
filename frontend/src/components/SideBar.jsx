@@ -7,6 +7,7 @@ const SideBar = () => {
 
   const handleLogOut = ()=>{
     window.localStorage.removeItem("Token")
+    window.localStorage.removeItem("UserData")
   }
 
   const items = [

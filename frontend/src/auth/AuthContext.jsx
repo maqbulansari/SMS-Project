@@ -9,28 +9,31 @@ export const useAuth = () => {
 }
 
 const AuthContext = ({ children }) => {
-  const [userData, setuser] = useState({});
-  const {role} = userData;
-
+  const [userData, setuser] = useState(() => {
+    const storedUser = window.localStorage.getItem("UserData");
+    return storedUser ? JSON.parse(storedUser) : {};
+  });
   const handleLogin = async (formdata, navigate) => {
 
     try {
       const responce = await axios.post("http://localhost:3000/user/login", formdata)
       window.localStorage.setItem("Token", responce.data.jwt);
+      window.localStorage.setItem("UserData", JSON.stringify(responce.data)); 
       toast("Login Successfully")
       console.log(responce.data);
-      setuser(responce.data)
+      setuser(responce.data);
+      const role = responce.data.role;
 
       
       if (role == "Director") 
             { return navigate("/admin") }
-      if(role == "Teacher" ||role == "student" ||role == "Guardian" ||role == "OfficeStaff") {
+      if(role == "Teacher" ||role == "Student" ||role == "Guardian" ||role == "OfficeStaff") {
       return  navigate("/user")
       }
 
 
     } catch (error) {
-      console.log(error.message)
+      console.log(error)
     }
   }
 

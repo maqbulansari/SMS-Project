@@ -7,6 +7,9 @@ const StudentData = require("../model/Student.js");
 const TeacherData = require("../model/Teacher.js");
 const GuardianData = require("../model/Guardian.js");
 const OfficeStaffData = require("../model/OfficeStaff.js");
+const FeeRecordData = require("../model/FeeRecord.js");
+const StuYearLvlData = require("../model/StudentYearlvl.js");
+const reportCardData = require("../model/ReportCard.js");
 
 
 exports.LoginUser = async(req,res)=>{
@@ -27,6 +30,18 @@ try {
     const officeStaff = await OfficeStaffData.countDocuments();
     
    return res.status(201).json({msg:"success",jwt,user:gettingUser,role:role.name,totalcount:{students,teachers,guardians,officeStaff}})};
+
+  if(role.name == "Teacher"){
+const gettingTeacher = await TeacherData.findOne({ user_id: gettingUser._id })
+ return res.status(201).json({msg:"success",jwt,user:gettingUser,role:role.name,teacher:gettingTeacher});
+  }
+  if(role.name == "Student"){
+const gettingStu = await StudentData.findOne({ user_id: gettingUser._id });
+const gettingFee = await FeeRecordData.find({ student_id: gettingStu._id });
+const gettingStuyrlvl = await StuYearLvlData.findOne({ stu_id: gettingStu._id });
+const gettingReportCard = await reportCardData.find({stu_lvl_id: gettingStuyrlvl._id});
+ return res.status(201).json({msg:"success",jwt,user:gettingUser,role:role.name,student:gettingStu,feeRec:gettingFee,reportCard:gettingReportCard});
+  }
 
   res.status(201).json({msg:"success",jwt,user:gettingUser,role:role.name});
   

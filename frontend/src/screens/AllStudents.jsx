@@ -2,9 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { SideHeader } from '@/components/SideHeader'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const AllStudents = () => {
   const [data, setdata] = useState([]);
+  const navigation = useNavigate();
 
   const gettingAllstudents = async () => {
     try {
@@ -19,6 +22,11 @@ const AllStudents = () => {
   useEffect(() => {
     gettingAllstudents()
   }, [])
+
+
+  const handleReportCard = (item)=>{
+   navigation(`/reportcard`,{ state: item })
+  } 
   return (
      <div className="@container/main flex flex-1 flex-col gap-2"> 
 <SideHeader/>
@@ -49,6 +57,7 @@ const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
             {item.qualification}
           </div>
         </CardFooter>
+        <Button onClick={()=>handleReportCard(item)}>Create Report Card</Button>
       </Card>
 
    )}
