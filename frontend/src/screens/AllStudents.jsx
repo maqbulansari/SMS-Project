@@ -4,8 +4,10 @@ import { SideHeader } from '@/components/SideHeader'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/auth/AuthContext';
 
 const AllStudents = () => {
+  const {userData} = useAuth()
   const [data, setdata] = useState([]);
   const navigation = useNavigate();
 
@@ -57,7 +59,7 @@ const imageSrc = `data:${user_pro.mimetype};base64,${user_pro?.data}`;
             {item.qualification}
           </div>
         </CardFooter>
-        <Button onClick={()=>handleReportCard(item)}>Create Report Card</Button>
+      { userData.role == "Teacher" && <Button onClick={()=>handleReportCard(item)}>Create Report Card</Button>}
       </Card>
 
    )}
